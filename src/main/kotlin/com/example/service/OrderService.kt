@@ -68,8 +68,10 @@ class OrderService(
         authenticatedUser: AuthenticatedUser,
         order: CafeOrder,
     ) {
-        if (authenticatedUser.userId != order.cafeUserId) {
-            throw CafeException(ErrorCode.FORBIDDEN)
+        if (authenticatedUser.isOnlyCustomer()) {
+            if (authenticatedUser.userId != order.cafeUserId) {
+                throw CafeException(ErrorCode.FORBIDDEN)
+            }
         }
     }
 
@@ -90,6 +92,6 @@ class OrderService(
     }
 
     fun getOrders(): List<OrderDto.DisplayResponse> {
-        TODO("Not yet implemented")
+        return cafeOrderRepository.findByOrders()
     }
 }
