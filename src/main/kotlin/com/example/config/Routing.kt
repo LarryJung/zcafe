@@ -1,6 +1,5 @@
 package com.example.config
 
-import com.example.domain.repository.CafeMenuRepository
 import com.example.service.MenuService
 import com.example.shared.CafeOrderStatus
 import com.example.shared.dto.OrderDto
@@ -51,6 +50,21 @@ fun Application.configureRouting() {
                     id = 1
                 )
                 call.respond(order)
+            }
+
+            get("/me") {
+                // TODO
+            }
+            post("/login") {
+                // TODO
+            }
+
+            post("/signup") {
+                // TODO
+            }
+
+            post("/logout") {
+                // TODO
             }
         }
     }

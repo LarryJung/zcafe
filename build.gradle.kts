@@ -6,6 +6,7 @@ val exposed_version: String by project
 val h2_version: String by project
 val hikaricp_version: String by project
 val koin_version: String by project
+val jbcrypt_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.23"
@@ -33,6 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-server-double-receive-jvm")
     implementation("io.ktor:ktor-server-call-logging-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-sessions-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -42,6 +44,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+    implementation("org.mindrot:jbcrypt:$jbcrypt_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
