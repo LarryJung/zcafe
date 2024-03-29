@@ -40,4 +40,9 @@ class UserService(
         }
         return cafeUser
     }
+
+    fun getUser(cafeUserId: Long): CafeUser {
+        return cafeUserRepository.read(cafeUserId)
+            ?: throw CafeException(ErrorCode.USER_NOT_FOUND)
+    }
 }
