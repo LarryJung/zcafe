@@ -1,18 +1,23 @@
 package com.example.config
 
+import com.example.service.LoginService
 import com.example.service.MenuService
 import com.example.shared.CafeOrderStatus
 import com.example.shared.dto.OrderDto
+import com.example.shared.dto.UserDto
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
 import org.koin.ktor.ext.inject
 import java.time.LocalDateTime
 
 
 fun Application.configureRouting() {
     val menuService by inject<MenuService>()
+    val loginService by inject<LoginService>()
 
     routing {
         get("/") {
@@ -53,18 +58,24 @@ fun Application.configureRouting() {
             }
 
             get("/me") {
-                // TODO
+                val user = call.sessions.get<AuthenticatedUser>() ?: AuthenticatedUser.none()
+                call.respond(user)
             }
             post("/login") {
-                // TODO
+                val user = call.receive<UserDto.LoginRequest>()
+                loginService.login(user, call.sessions)
+                call.respond(HttpStatusCode.OK)
             }
 
             post("/signup") {
-                // TODO
+                val request = call.receive<UserDto.LoginRequest>()
+                loginService.signup(request, call.sessions)
+                call.respond(HttpStatusCode.OK)
             }
 
             post("/logout") {
-                // TODO
+                loginService.logout(call.sessions)
+                call.respond(HttpStatusCode.OK)
             }
         }
     }

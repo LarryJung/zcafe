@@ -5,6 +5,7 @@ import com.example.domain.ExposedCrudRepository
 import com.example.domain.model.CafeUser
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
 
@@ -35,5 +36,11 @@ class CafeUserRepository(
         it[nickname] = domain.nickname
         it[password] = domain.password
         it[roles] = domain.roles
+    }
+
+    fun findByNickname(nickname: String): CafeUser? = dbQuery {
+        table.selectAll().where { table.nickname eq nickname }
+            .map { toDomain(it) }
+            .singleOrNull()
     }
 }
