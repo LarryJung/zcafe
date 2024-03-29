@@ -23,8 +23,7 @@ fun Application.configureRouting(cafeMenuRepository: CafeMenuRepository) {
             }
             post("/orders") {
                 val request = call.receive<OrderDto.CreateRequest>()
-                val menuList = cafeMenuRepository.findAll()
-                val selectedMenu = menuList.first { it.id == request.menuId }
+                val selectedMenu = cafeMenuRepository.read(request.menuId)!!
                 val order = OrderDto.DisplayResponse(
                     orderCode = "ordercode1",
                     menuName = selectedMenu.name,
