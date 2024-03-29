@@ -1,6 +1,10 @@
 package com.example.shared
 
-val dummyQueryList = listOf(
+val dummyUserQueryList = listOf(
+    "INSERT INTO PUBLIC.CAFE_USER (NICKNAME, PASSWORD, ROLES) VALUES ('admin', '\$2a\$10\$5L3GMrjNNuPE79OFgCYXPuOoG1il1Ov9o/lfCbFScB0YwlG.PaM1y', 'CUSTOMER,ADMINISTER');",
+    "INSERT INTO PUBLIC.CAFE_USER (NICKNAME, PASSWORD, ROLES) VALUES ('customer', '\$2a\$10\$7MGKbrglIJ5YwXvpLdPSru7vG19Be7BrvEK/6qu465me.Y4/YHkrC', 'CUSTOMER');"
+)
+val dummyMenuQueryList = listOf(
     "insert into cafe_menu (menu_name, price, category, image) values ('아메리카노(HOT)', 3800, 'COFFEE', 'https://bucket-ogntr9.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98%EB%A9%94%EB%89%B4/%E1%84%8B%E1%85%A1%E1%84%86%E1%85%A6%E1%84%85%E1%85%B5%E1%84%8F%E1%85%A1%E1%84%82%E1%85%A9(HOT).jpg');",
     "insert into cafe_menu (menu_name, price, category, image) values ('아메리카노(ICE)', 3800, 'COFFEE', 'https://bucket-ogntr9.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98%EB%A9%94%EB%89%B4/%E1%84%8B%E1%85%A1%E1%84%86%E1%85%A6%E1%84%85%E1%85%B5%E1%84%8F%E1%85%A1%E1%84%82%E1%85%A9(ICE).jpg');",
     "insert into cafe_menu (menu_name, price, category, image) values ('카페라떼(HOT)', 4500, 'COFFEE', 'https://bucket-ogntr9.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98%EB%A9%94%EB%89%B4/%E1%84%8F%E1%85%A1%E1%84%91%E1%85%A6%E1%84%85%E1%85%A1%E1%84%84%E1%85%A6(HOT)%20%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%B5%E1%86%B8.png');",

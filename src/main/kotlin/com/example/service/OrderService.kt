@@ -88,4 +88,8 @@ class OrderService(
         return cafeOrderRepository.findByCode(orderCode)
             ?: throw CafeException(ErrorCode.ORDER_NOT_FOUND)
     }
+
+    fun getOrders(): List<OrderDto.DisplayResponse> {
+        TODO("Not yet implemented")
+    }
 }

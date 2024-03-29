@@ -3,7 +3,8 @@ package com.example.config
 import com.example.domain.CafeMenuTable
 import com.example.domain.CafeOrderTable
 import com.example.domain.CafeUserTable
-import com.example.shared.dummyQueryList
+import com.example.shared.dummyMenuQueryList
+import com.example.shared.dummyUserQueryList
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -58,6 +59,7 @@ private fun initData() {
             CafeOrderTable
         )
 
-        execInBatch(dummyQueryList)
+        execInBatch(dummyUserQueryList)
+        execInBatch(dummyMenuQueryList)
     }
 }

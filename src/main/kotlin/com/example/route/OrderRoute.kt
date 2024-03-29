@@ -32,5 +32,9 @@ fun Route.orderRoute() {
             orderService.updateOrderStatus(orderCode, state, call.authenticatedUser())
             call.respond(HttpStatusCode.OK)
         }
+        get("/orders") {
+            val orders: List<OrderDto.DisplayResponse> = orderService.getOrders()
+            call.respond(orders)
+        }
     }
 }

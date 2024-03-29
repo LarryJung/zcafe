@@ -14,4 +14,16 @@ class MenuService(
         return cafeMenuRepository.read(id)
             ?: throw IllegalArgumentException("Menu not found")
     }
+
+    fun createMenu(menu: CafeMenu): CafeMenu {
+        return cafeMenuRepository.create(menu)
+    }
+
+    fun updateMenu(menu: CafeMenu): CafeMenu {
+        return cafeMenuRepository.update(menu)
+    }
+
+    fun deleteMenu(id: Long) {
+        cafeMenuRepository.delete(id)
+    }
 }
