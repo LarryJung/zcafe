@@ -5,6 +5,7 @@ import com.example.config.configureDependencyInjection
 import com.example.config.configureHttp
 import com.example.config.configureLogging
 import com.example.config.configureRouting
+import com.example.config.configureSecurity
 import com.example.config.configureSerialization
 import com.example.config.configureSession
 import io.ktor.server.application.*
@@ -18,6 +19,7 @@ fun Application.module() {
     configureDependencyInjection()
     configureHttp()
     configureSession()
+    configureSecurity()
     configureSerialization()
     configureRouting()
     configureLogging()
