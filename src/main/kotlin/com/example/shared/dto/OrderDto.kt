@@ -1,8 +1,10 @@
 package com.example.shared.dto
 
 import com.example.shared.CafeOrderStatus
+import com.example.shared.LocalDateSerializer
 import com.example.shared.LocalDateTimeSerializer
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 class OrderDto {
@@ -23,4 +25,12 @@ class OrderDto {
 
     @Serializable
     data class UpdateStatusRequest(val status: CafeOrderStatus)
+
+    @Serializable
+    data class StatsResponse(
+        @Serializable(with = LocalDateSerializer::class)
+        val orderDate: LocalDate,
+        val totalOrderCount: Long,
+        val totalOrderPrice: Long,
+    )
 }
