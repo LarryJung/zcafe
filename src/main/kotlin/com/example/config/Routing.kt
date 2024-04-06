@@ -1,8 +1,8 @@
 package com.example.config
 
+import com.example.domain.repository.CafeMenuRepository
 import com.example.shared.CafeOrderStatus
 import com.example.shared.dto.OrderDto
-import com.example.shared.menuList
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 import java.time.LocalDateTime
 
 
-fun Application.configureRouting() {
+fun Application.configureRouting(cafeMenuRepository: CafeMenuRepository) {
     routing {
         get("/") {
             call.respondText("Hello World!")
@@ -18,12 +18,12 @@ fun Application.configureRouting() {
 
         route("/api") {
             get("/menus") {
-                val list = menuList
+                val list = cafeMenuRepository.findAll()
                 call.respond(list)
             }
             post("/orders") {
                 val request = call.receive<OrderDto.CreateRequest>()
-                val selectedMenu = menuList.first { it.id == request.menuId }
+                val selectedMenu = cafeMenuRepository.read(request.menuId)!!
                 val order = OrderDto.DisplayResponse(
                     orderCode = "ordercode1",
                     menuName = selectedMenu.name,
