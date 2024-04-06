@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.config.configureDatabase
+import com.example.config.configureDependencyInjection
 import com.example.config.configureRouting
 import com.example.config.configureSerialization
 import com.example.domain.CafeMenuTable
@@ -13,8 +14,7 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureDatabase()
+    configureDependencyInjection()
     configureSerialization()
-
-    val cafeMenuRepository = CafeMenuRepository(CafeMenuTable)
-    configureRouting(cafeMenuRepository)
+    configureRouting()
 }
