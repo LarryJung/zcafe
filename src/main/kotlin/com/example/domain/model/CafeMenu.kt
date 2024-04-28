@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.domain.BaseModel
 import com.example.shared.CafeMenuCategory
 import kotlinx.serialization.Serializable
 
@@ -9,5 +10,5 @@ data class CafeMenu(
     val price: Int,
     val category: CafeMenuCategory,
     val image: String,
-    var id: Long? = null,
-)
+    override var id: Long? = null,
+): BaseModel
