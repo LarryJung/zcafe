@@ -7,6 +7,8 @@ import com.example.shared.dto.OrderDto
 import com.example.shared.dto.UserDto
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.http.content.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -20,41 +22,39 @@ fun Application.configureRouting() {
     val loginService by inject<LoginService>()
 
     routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
-
         route("/api") {
             get("/menus") {
                 val list = menuService.findAll()
                 call.respond(list)
             }
-            post("/orders") {
-                val request = call.receive<OrderDto.CreateRequest>()
-                val selectedMenu = menuService.getMenu(request.menuId)
-                val order = OrderDto.DisplayResponse(
-                    orderCode = "ordercode1",
-                    menuName = selectedMenu.name,
-                    customerName = "홍길동",
-                    price = selectedMenu.price,
-                    status = CafeOrderStatus.READY,
-                    orderedAt = LocalDateTime.now(),
-                    id = 1
-                )
-                call.respond(order)
-            }
-            get("/orders/{orderCode}") {
-                val orderCode = call.parameters["orderCode"]!!
-                val order = OrderDto.DisplayResponse(
-                    orderCode = orderCode,
-                    menuName = "아이스라떼",
-                    customerName = "홍길동",
-                    price = 1000,
-                    status = CafeOrderStatus.READY,
-                    orderedAt = LocalDateTime.now(),
-                    id = 1
-                )
-                call.respond(order)
+            authenticate(AuthenticatedUser.CUSTOMER_REQUIRED) {
+                post("/orders") {
+                    val request = call.receive<OrderDto.CreateRequest>()
+                    val selectedMenu = menuService.getMenu(request.menuId)
+                    val order = OrderDto.DisplayResponse(
+                        orderCode = "ordercode1",
+                        menuName = selectedMenu.name,
+                        customerName = "홍길동",
+                        price = selectedMenu.price,
+                        status = CafeOrderStatus.READY,
+                        orderedAt = LocalDateTime.now(),
+                        id = 1
+                    )
+                    call.respond(order.orderCode)
+                }
+                get("/orders/{orderCode}") {
+                    val orderCode = call.parameters["orderCode"]!!
+                    val order = OrderDto.DisplayResponse(
+                        orderCode = orderCode,
+                        menuName = "아이스라떼",
+                        customerName = "홍길동",
+                        price = 1000,
+                        status = CafeOrderStatus.READY,
+                        orderedAt = LocalDateTime.now(),
+                        id = 1
+                    )
+                    call.respond(order)
+                }
             }
 
             get("/me") {
@@ -77,6 +77,10 @@ fun Application.configureRouting() {
                 loginService.logout(call.sessions)
                 call.respond(HttpStatusCode.OK)
             }
+        }
+
+        singlePageApplication {
+            react("frontend")
         }
     }
 }
