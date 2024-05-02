@@ -94,4 +94,16 @@ class OrderService(
     fun getOrders(): List<OrderDto.DisplayResponse> {
         return cafeOrderRepository.findByOrders()
     }
+
+    fun getOrderStats(): List<OrderDto.StatsResponse> {
+        return cafeOrderRepository.findOrderStats()
+//        return cafeOrderRepository.findAll().groupBy { it.orderedAt.toLocalDate() }
+//            .map {
+//                OrderDto.StatsResponse(
+//                    orderDate = it.key,
+//                    totalOrderCount = it.value.size.toLong(),
+//                    totalOrderPrice = it.value.sumOf { it.price }.toLong()
+//                )
+//            }.sortedByDescending { it.orderDate }
+    }
 }

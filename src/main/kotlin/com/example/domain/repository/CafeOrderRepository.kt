@@ -9,9 +9,15 @@ import com.example.shared.dto.OrderDto
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.alias
+import org.jetbrains.exposed.sql.castTo
+import org.jetbrains.exposed.sql.count
+import org.jetbrains.exposed.sql.javatime.JavaLocalDateColumnType
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
+import org.jetbrains.exposed.sql.sum
+import java.time.LocalDate
 
 class CafeOrderRepository(
     override val table: CafeOrderTable,
@@ -95,5 +101,35 @@ class CafeOrderRepository(
                 id = it[table.id].value
             )
         }
+    }
+
+    /**
+     * SELECT CAST(CAFE_ORDER.ORDERED_AT AS DATE),
+     *        COUNT(CAFE_ORDER.ID)  count,
+     *        SUM(CAFE_ORDER.PRICE) price
+     * FROM CAFE_ORDER
+     * GROUP BY CAST(CAFE_ORDER.ORDERED_AT AS DATE)
+     * ORDER BY CAST(CAFE_ORDER.ORDERED_AT AS DATE) DESC;
+     */
+    fun findOrderStats(): List<OrderDto.StatsResponse> = dbQuery {
+        val countExpression = table.id.count().alias("count")
+        val priceSumExpression = table.price.sum().alias("price")
+        val orderDateExpression = table.orderedAt.castTo<LocalDate>(JavaLocalDateColumnType())
+
+        table
+            .select(
+                orderDateExpression,
+                countExpression,
+                priceSumExpression
+            )
+            .groupBy(orderDateExpression)
+            .orderBy(orderDateExpression to SortOrder.DESC)
+            .map {
+                OrderDto.StatsResponse(
+                    orderDate = it[orderDateExpression],
+                    totalOrderCount = it[countExpression],
+                    totalOrderPrice = it[priceSumExpression]?.toLong() ?: 0
+                )
+            }
     }
 }
