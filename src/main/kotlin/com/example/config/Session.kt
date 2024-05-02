@@ -20,6 +20,10 @@ data class AuthenticatedUser(
     val userId: Long,
     val userRoles: List<CafeUserRole>
 ): Principal {
+    fun isOnlyCustomer(): Boolean {
+        return userRoles == listOf(CafeUserRole.CUSTOMER)
+    }
+
     companion object {
         fun none() = AuthenticatedUser(0, listOf())
 

@@ -5,6 +5,7 @@ import com.example.domain.ExposedCrudRepository
 import com.example.domain.model.CafeOrder
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
 
@@ -43,5 +44,12 @@ class CafeOrderRepository(
         it[price] = domain.price
         it[status] = domain.status
         it[orderedAt] = domain.orderedAt
+    }
+
+    fun findByCode(orderCode: String): CafeOrder? = dbQuery {
+        val query = table.selectAll().where { table.orderCode.eq(orderCode) }
+        query
+            .map(::toDomain)
+            .firstOrNull()
     }
 }
