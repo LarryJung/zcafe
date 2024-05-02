@@ -21,17 +21,23 @@ fun Route.orderRoute() {
             val code = orderService.createOrder(createRequest, call.authenticatedUser())
             call.respond(code)
         }
-        get("/orders/{orderCode}") {
-            val orderCode = call.parameters["orderCode"]!!
-            val order = orderService.getOrder(orderCode, call.authenticatedUser())
-            call.respond(order)
-        }
         put("/orders/{orderCode}/status") {
             val orderCode = call.parameters["orderCode"]!!
             val state = call.receive<OrderDto.UpdateStatusRequest>().status
             orderService.updateOrderStatus(orderCode, state, call.authenticatedUser())
             call.respond(HttpStatusCode.OK)
         }
+    }
+
+    authenticate(AuthenticatedUser.USER_REQUIRED) {
+        get("/orders/{orderCode}") {
+            val orderCode = call.parameters["orderCode"]!!
+            val order = orderService.getOrder(orderCode, call.authenticatedUser())
+            call.respond(order)
+        }
+    }
+
+    authenticate(AuthenticatedUser.ADMINISTER_REQUIRED) {
         get("/orders") {
             val orders: List<OrderDto.DisplayResponse> = orderService.getOrders()
             call.respond(orders)
