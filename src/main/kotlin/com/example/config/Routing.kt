@@ -1,6 +1,7 @@
 package com.example.config
 
 import com.example.route.menuRoute
+import com.example.route.monitorRoute
 import com.example.route.orderRoute
 import com.example.route.userRoute
 import io.ktor.server.application.*
@@ -15,6 +16,7 @@ fun Application.configureRouting() {
             orderRoute()
         }
 
+        monitorRoute()
         singlePageApplication {
             react("frontend")
         }
