@@ -7,6 +7,8 @@ import com.example.domain.model.CafeOrder
 import com.example.shared.CafeOrderStatus
 import com.example.shared.dummyMenuQueryList
 import com.example.shared.dummyUserQueryList
+import com.example.shared.getPropertyBoolean
+import com.example.shared.getPropertyString
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -27,7 +29,9 @@ import kotlin.random.Random
 fun Application.configureDatabase() {
     configureH2()
     connectDatabase()
-    initData()
+    if (getPropertyBoolean("db.initData", false)) {
+        initData()
+    }
 }
 
 
@@ -45,11 +49,11 @@ fun Application.configureH2() {
 }
 
 
-private fun connectDatabase() {
+private fun Application.connectDatabase() {
     val config =
         HikariConfig().apply {
-            jdbcUrl = "jdbc:h2:mem:cafedb"
-            driverClassName = "org.h2.Driver"
+            jdbcUrl = getPropertyString("db.jdbcUrl")
+            driverClassName = getPropertyString("db.driverClassName")
             validate()
         }
 
